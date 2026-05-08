@@ -1,0 +1,44 @@
+import numpy as numpy
+import tensorflow as tf
+from tensorflow.keras.dataset import mnist
+from tensorflow.keras import layers,models
+import matplotlib.pyplot as plt
+
+
+#load MNIST 
+(x_train, y_train),(x_test, y_test) = mnist.load_data()
+
+#clean the data
+x_train = x_train/255.0
+x_test = x_test/255.0
+
+#build the brain
+model = models.Sequential([
+    layers.flatten(input_shape = (28,28)),#flatten the image f 28*28 pixels to a line
+    layers.Dense(128,activation='relu'),
+    layers.Dense(10, activation = 'softmax')
+])
+
+#train the brain
+model.compile(Optimizer='adam',
+loss = 'sparse_categorical_crossentropy',
+metrics = 'accuracy'
+)
+
+#test the brain
+model.fit(x_train, y_train, epochs = 10)
+
+#final test
+test_loss = model.evaluate(x_test, y_test)
+test_acc = (f" The computer is {test_acc*100}% accurate!")
+
+#display
+plt.figure(figsize = (10,5))#makes display window wide
+
+for i in range(10):
+      plt.subplot(2, 5, i+1)#create a grid of 2 rows and 5 columns
+      plt.imshow(x_test[i], cmap = 'gray')
+      plt.title(f"Digit: {y_test[i]}")
+      plt.axis('off')#hides the x and y grid making the code look cleaner
+
+plt.show()
