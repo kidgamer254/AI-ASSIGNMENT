@@ -1,0 +1,99 @@
+# =============================================================================
+# GRAPH ANNOTATION / DEFINITION
+# =============================================================================
+# We represent the graph using an adjacency list (a dictionary of lists).
+# Visualization of the test graph:
+#        A
+#       / \
+#      B   C
+#     / \   \
+#    D   E   F
+# =============================================================================
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': [],
+    'F': []
+}
+
+# -----------------------------------------------------------------------------
+# (i) Breadth-First Search (BFS)
+# Uses a Queue (FIFO) to explore neighbors level-by-level.
+# -----------------------------------------------------------------------------
+def bfs_path(graph, start, goal):
+    """
+    Finds the shortest path from start to goal using BFS.
+    Each element in the queue is a tuple: (current_node, path_taken_so_far)
+    """
+    # Queue stores pairs of (node, [path])
+    queue = [(start, [start])]
+    visited = set([start])
+    
+    while queue:
+        # Pop the first element (FIFO)
+        current_node, path = queue.pop(0)
+        
+        # Check if we reached the goal state
+        if current_node == goal:
+            return path
+            
+        # Explore neighbors
+        for neighbor in graph[current_node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                # Append the neighbor to the current path and add to queue
+                queue.append((neighbor, path + [neighbor]))
+                
+    return None # Return None if no path exists
+
+# -----------------------------------------------------------------------------
+# (ii) Depth-First Search (DFS)
+# Uses a Stack (LIFO) to explore as deep as possible along each branch.
+# -----------------------------------------------------------------------------
+def dfs_path(graph, start, goal):
+    """
+    Finds a path from start to goal using DFS.
+    Each element in the stack is a tuple: (current_node, path_taken_so_far)
+    """
+    # Stack stores pairs of (node, [path])
+    stack = [(start, [start])]
+    visited = set()
+    
+    while stack:
+        # Pop the last element (LIFO)
+        current_node, path = stack.pop()
+        
+        # Check if we reached the goal state
+        if current_node == goal:
+            return path
+            
+        if current_node not in visited:
+            visited.add(current_node)
+            
+            # Explore neighbors. 
+            # Note: Reversed to maintain a standard left-to-right search order when popping
+            for neighbor in reversed(graph[current_node]):
+                if neighbor not in visited:
+                    stack.append((neighbor, path + [neighbor]))
+                    
+    return None # Return None if no path exists
+
+# =============================================================================
+# EXECUTION & TESTING
+# =============================================================================
+if __name__ == "__main__":
+    start_node = 'A'
+    goal_node = 'E'
+    
+    print(f"--- Execution of Search Algorithms from '{start_node}' to '{goal_node}' ---")
+    
+    # Run BFS
+    bfs_result = bfs_path(graph, start_node, goal_node)
+    print(f"BFS Search Path: {' -> '.join(bfs_result) if bfs_result else 'No Path Found'}")
+    
+    # Run DFS
+    dfs_result = dfs_path(graph, start_node, goal_node)
+    print(f"DFS Search Path: {' -> '.join(dfs_result) if dfs_result else 'No Path Found'}")
