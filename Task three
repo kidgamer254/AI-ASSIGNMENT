@@ -1,0 +1,62 @@
+% ==========================================
+% FACTS: Genders
+% ==========================================
+male(charles). male(david). male(john). male(robert). male(james).
+female(elizabeth). female(mary). female(lisa). female(sarah). female(emily).
+
+% ==========================================
+% FACTS: Parents (parent(Parent, Child))
+% ==========================================
+% Grandparents to Parents
+parent(charles, john).
+parent(elizabeth, john).
+parent(charles, mary).
+parent(elizabeth, mary).
+
+% Parents to Children (John & Lisa's kids)
+parent(john, david).
+parent(lisa, david).
+parent(john, sarah).
+parent(lisa, sarah).
+
+% Parents to Children (Mary & Robert's kids)
+parent(mary, robert).
+parent(james, robert).
+parent(mary, emily).
+parent(james, emily).
+
+% ==========================================
+% RULES: Relationships
+% ==========================================
+
+% 1. Siblings: Share at least one parent, and X is not Y.
+sibling(X, Y) :- 
+    parent(P, X), 
+    parent(P, Y), 
+    X \= Y.
+
+% 2. Grandparents
+grandparent(GP, GC) :- 
+    parent(GP, P), 
+    parent(P, GC).
+
+% 3. Grandchildren
+grandchild(GC, GP) :- 
+    grandparent(GP, GC).
+
+% 4. Uncles and Aunts (Sibling of a parent)
+uncle(U, N) :- 
+    parent(P, N), 
+    sibling(U, P), 
+    male(U).
+
+aunt(A, N) :- 
+    parent(P, N), 
+    sibling(A, P), 
+    female(A).
+
+% 5. Cousins (Children of siblings)
+cousin(C1, C2) :- 
+    parent(P1, C1), 
+    parent(P2, C2), 
+    sibling(P1, P2).
