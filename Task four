@@ -1,6 +1,7 @@
-# =============================================================================
+
 # GRAPH ANNOTATION / DEFINITION
-# =============================================================================
+
+
 # We represent the graph using an adjacency list (a dictionary of lists).
 # Visualization of the test graph:
 #        A
@@ -8,7 +9,7 @@
 #      B   C
 #     / \   \
 #    D   E   F
-# =============================================================================
+
 
 graph = {
     'A': ['B', 'C'],
@@ -19,10 +20,10 @@ graph = {
     'F': []
 }
 
-# -----------------------------------------------------------------------------
+
 # (i) Breadth-First Search (BFS)
 # Uses a Queue (FIFO) to explore neighbors level-by-level.
-# -----------------------------------------------------------------------------
+
 def bfs_path(graph, start, goal):
     """
     Finds the shortest path from start to goal using BFS.
